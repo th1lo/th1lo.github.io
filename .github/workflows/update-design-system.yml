@@ -22,7 +22,7 @@ jobs:
 
       - name: Commit and push if changed
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
