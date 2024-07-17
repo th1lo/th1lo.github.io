@@ -1,0 +1,39 @@
+name: Update Design System
+
+on:
+  repository_dispatch:
+    types: [design-system-update]
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Update data.json
+        env:
+          UPDATE_DATA: ${{ toJson(github.event.client_payload) }}
+        run: |
+          if [ ! -f data.json ]; then
+            echo "[]" > data.json
+          fi
+          content=$(jq --argjson newData "$UPDATE_DATA" '. = [$newData] + . | .[0:50]' data.json)
+          echo "$content" > data.json
+
+      - name: Commit and push if changed
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git add data.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update design system data" && git push)
+
+  deploy:
+    needs: update-data
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .

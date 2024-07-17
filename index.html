@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design System Updates</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .update {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .update h2 {
+            margin-top: 0;
+            color: #3498db;
+        }
+        .update-meta {
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+        .update-section {
+            margin-top: 10px;
+        }
+        .update-section h3 {
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        .update-section ul {
+            margin-top: 0;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Design System Updates</h1>
+    <div id="updates-container"></div>
+
+    <script>
+        async function fetchUpdates() {
+            const response = await fetch('data.json');
+            const updates = await response.json();
+            const container = document.getElementById('updates-container');
+
+            updates.forEach(update => {
+                const updateElement = document.createElement('div');
+                updateElement.className = 'update';
+                updateElement.innerHTML = `
+                    <h2>${update.file_name}</h2>
+                    <p class="update-meta">
+                        Published by ${update.triggered_by} on ${new Date(update.timestamp).toLocaleString()}
+                    </p>
+                    <p>${update.description}</p>
+                    ${createUpdateSection('New Components', update.created_components)}
+                    ${createUpdateSection('Modified Components', update.modified_components)}
+                    ${createUpdateSection('Deleted Components', update.deleted_components)}
+                    ${createUpdateSection('New Styles', update.created_styles)}
+                    ${createUpdateSection('Modified Styles', update.modified_styles)}
+                    ${createUpdateSection('Deleted Styles', update.deleted_styles)}
+                    ${createUpdateSection('New Variables', update.created_variables)}
+                    ${createUpdateSection('Modified Variables', update.modified_variables)}
+                    ${createUpdateSection('Deleted Variables', update.deleted_variables)}
+                `;
+                container.appendChild(updateElement);
+            });
+        }
+
+        function createUpdateSection(title, items) {
+            if (!items || items.length === 0) return '';
+            return `
+                <div class="update-section">
+                    <h3>${title}</h3>
+                    <ul>
+                        ${items.map(item => `<li>${item.name}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        fetchUpdates();
+    </script>
+</body>
+</html>
