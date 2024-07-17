@@ -42,6 +42,13 @@
             margin-top: 0;
             padding-left: 20px;
         }
+        .preview-image {
+            max-width: 100%;
+            height: auto;
+            margin-top: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -60,18 +67,14 @@
                 updateElement.innerHTML = `
                     <h2>${update.file_name}</h2>
                     <p class="update-meta">
-                        Published by ${update.triggered_by} on ${new Date(update.timestamp).toLocaleString()}
+                        Published by ${update.triggered_by.handle} on ${new Date(update.timestamp).toLocaleString()}
                     </p>
                     <p>${update.description}</p>
+                    ${update.preview_image ? `<img src="${update.preview_image}" alt="Preview" class="preview-image">` : ''}
                     ${createUpdateSection('New Components', update.created_components)}
                     ${createUpdateSection('Modified Components', update.modified_components)}
-                    ${createUpdateSection('Deleted Components', update.deleted_components)}
                     ${createUpdateSection('New Styles', update.created_styles)}
                     ${createUpdateSection('Modified Styles', update.modified_styles)}
-                    ${createUpdateSection('Deleted Styles', update.deleted_styles)}
-                    ${createUpdateSection('New Variables', update.created_variables)}
-                    ${createUpdateSection('Modified Variables', update.modified_variables)}
-                    ${createUpdateSection('Deleted Variables', update.deleted_variables)}
                 `;
                 container.appendChild(updateElement);
             });
