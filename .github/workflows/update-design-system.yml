@@ -22,13 +22,9 @@ jobs:
       - name: Install dependencies
         run: npm install axios
 
-      - name: Process Figma update
-        env:
-          FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
-          WEBHOOK_PASSCODE: ${{ secrets.WEBHOOK_PASSCODE }}
-          PAYLOAD: ${{ toJson(github.event.client_payload) }}
+      - name: Create Node.js script
         run: |
-          node - << EOF
+          cat << EOF > process_update.js
           const axios = require('axios');
           const fs = require('fs').promises;
 
@@ -106,6 +102,13 @@ jobs:
 
           processUpdate();
           EOF
+
+      - name: Process Figma update
+        env:
+          FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
+          WEBHOOK_PASSCODE: ${{ secrets.WEBHOOK_PASSCODE }}
+          PAYLOAD: ${{ toJson(github.event.client_payload) }}
+        run: node process_update.js
 
       - name: Commit and push if changed
         run: |
