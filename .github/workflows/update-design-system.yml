@@ -49,7 +49,7 @@ jobs:
 
               // Only process LIBRARY_PUBLISH events
               if (payload.event_type !== 'LIBRARY_PUBLISH') {
-                console.log(`Received ${payload.event_type} event. Ignoring.`);
+                console.log(\`Received \${payload.event_type} event. Ignoring.\`);
                 process.exit(0);
               }
 
@@ -57,7 +57,7 @@ jobs:
 
               console.log('Fetching image preview');
               // Get image preview
-              const imageResponse = await axios.get(`https://api.figma.com/v1/images/${file_key}?ids=0&format=png`, {
+              const imageResponse = await axios.get(\`https://api.figma.com/v1/images/\${file_key}?ids=0&format=png\`, {
                 headers: { 'X-Figma-Token': process.env.FIGMA_TOKEN }
               });
               const preview_image = imageResponse.data.images['0'];
