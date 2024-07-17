@@ -56,11 +56,15 @@ jobs:
               const { file_key, timestamp, triggered_by, description, file_name, components, styles } = payload;
 
               console.log('Fetching image preview');
-              // Get image preview
-              const imageResponse = await axios.get(\`https://api.figma.com/v1/images/\${file_key}?ids=0&format=png\`, {
-                headers: { 'X-Figma-Token': process.env.FIGMA_TOKEN }
-              });
-              const preview_image = imageResponse.data.images['0'];
+              let preview_image = null;
+              try {
+                const imageResponse = await axios.get(\`https://api.figma.com/v1/images/\${file_key}?ids=0&format=png\`, {
+                  headers: { 'X-Figma-Token': process.env.FIGMA_TOKEN }
+                });
+                preview_image = imageResponse.data.images['0'];
+              } catch (error) {
+                console.log('Failed to fetch image preview:', error.message);
+              }
 
               // Prepare update data
               const newUpdate = {
