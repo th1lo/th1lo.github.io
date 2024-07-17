@@ -1,0 +1,15 @@
+[
+  {
+    "created_components": [
+      {
+        "name": "Test Component"
+      }
+    ],
+    "description": "Manual test update",
+    "file_name": "Test File",
+    "timestamp": "2023-07-17T12:00:00Z",
+    "triggered_by": {
+      "handle": "Test User"
+    }
+  }
+]
