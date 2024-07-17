@@ -8,7 +8,9 @@ jobs:
   update-data:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_PAT }}
 
       - name: Update data.json
         env:
@@ -21,8 +23,6 @@ jobs:
           echo "$content" > data.json
 
       - name: Commit and push if changed
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
@@ -33,7 +33,7 @@ jobs:
     needs: update-data
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
