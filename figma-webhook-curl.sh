@@ -1,13 +1,11 @@
 #!/bin/bash
 
-# Load environment variables from .env file if it exists
-if [ -f .env ]; then
-    source .env
-fi
+# Load environment variables
+source .env
 
-curl -X POST \
+curl -X PUT \
   -H "X-FIGMA-TOKEN: $FIGMA_TOKEN" \
-  -H 'Content-Type: application/json' \
+  -H "Content-Type: application/json" \
   -d '{
     "event_type": "LIBRARY_PUBLISH",
     "team_id": "'$FIGMA_TEAM_ID'",
@@ -15,4 +13,4 @@ curl -X POST \
     "passcode": "'$WEBHOOK_PASSCODE'",
     "description": "Design System Library Publish Notifications"
   }' \
-  'https://api.figma.com/v2/webhooks'
+  "https://api.figma.com/v2/webhooks/$WEBHOOK_ID"

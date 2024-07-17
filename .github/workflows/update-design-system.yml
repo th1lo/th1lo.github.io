@@ -14,6 +14,18 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Verify webhook passcode
+        env:
+          WEBHOOK_PASSCODE: ${{ secrets.WEBHOOK_PASSCODE }}
+          PAYLOAD: ${{ toJson(github.event.client_payload) }}
+        run: |
+          echo "Received payload:"
+          echo "$PAYLOAD" | jq .
+          if [[ $(echo "$PAYLOAD" | jq -r '.passcode') != "$WEBHOOK_PASSCODE" ]]; then
+            echo "Invalid passcode"
+            exit 1
+          fi
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -22,22 +34,12 @@ jobs:
       - name: Install dependencies
         run: npm install axios
 
-      - name: Verify Webhook Passcode
+      - name: Process Figma update
         env:
-          WEBHOOK_PASSCODE: ${{ secrets.WEBHOOK_PASSCODE }}
+          FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
           PAYLOAD: ${{ toJson(github.event.client_payload) }}
         run: |
-          payload=$(echo $PAYLOAD | jq -r '.')
-          received_passcode=$(echo $payload | jq -r '.passcode')
-          if [ "$received_passcode" != "$WEBHOOK_PASSCODE" ]; then
-            echo "Invalid passcode received"
-            exit 1
-          fi
-          echo "Passcode verified successfully"
-
-            - name: Create Node.js script
-          run: |
-          cat << EOF > process_update.js
+          node << EOF
           const axios = require('axios');
           const fs = require('fs').promises;
 
@@ -46,25 +48,7 @@ jobs:
               console.log('Starting processUpdate function');
               const payload = JSON.parse(process.env.PAYLOAD);
               
-              console.log('Received payload:', JSON.stringify(payload, null, 2));
-
-              // Verify passcode
-              if (payload.passcode !== process.env.WEBHOOK_PASSCODE) {
-                console.error('Invalid passcode');
-                process.exit(1);
-              }
-
-              // Handle PING event
-              if (payload.event_type === 'PING') {
-                console.log('Received PING event. Webhook setup successful.');
-                process.exit(0);
-              }
-
-              // Only process LIBRARY_PUBLISH events
-              if (payload.event_type !== 'LIBRARY_PUBLISH') {
-                console.log(\`Received \${payload.event_type} event. Ignoring.\`);
-                process.exit(0);
-              }
+              console.log('Processing payload:', JSON.stringify(payload, null, 2));
 
               const { file_key, timestamp, triggered_by, description, file_name, components, styles } = payload;
 
@@ -121,13 +105,6 @@ jobs:
 
           processUpdate();
           EOF
-
-      - name: Process Figma update
-        env:
-          FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
-          WEBHOOK_PASSCODE: ${{ secrets.WEBHOOK_PASSCODE }}
-          PAYLOAD: ${{ toJson(github.event.client_payload) }}
-        run: node process_update.js
 
       - name: Commit and push if changed
         run: |
