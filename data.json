@@ -1,97 +1,12 @@
 [
   {
-    "file_name": "Test Library Update",
-    "description": "This is a test update",
-    "triggered_by": {
-      "handle": "Test User"
-    },
-    "timestamp": "2024-07-17T18:14:13Z",
+    "file_name": "Test Dispatch",
+    "description": "Testing GitHub dispatch",
+    "timestamp": "2024-07-17T19:40:03Z",
     "preview_image": null,
-    "created_components": [
-      {
-        "name": "New Test Component"
-      }
-    ],
-    "modified_components": [
-      {
-        "name": "Modified Test Component"
-      }
-    ],
-    "created_styles": [
-      {
-        "name": "New Test Style"
-      }
-    ],
-    "modified_styles": [
-      {
-        "name": "Modified Test Style"
-      }
-    ]
-  },
-  {
-    "created_components": [
-      {
-        "name": "PrimaryButton"
-      },
-      {
-        "name": "SecondaryButton"
-      }
-    ],
-    "created_styles": [
-      {
-        "name": "Primary Color"
-      },
-      {
-        "name": "Secondary Color"
-      }
-    ],
-    "description": "Added new color palette and typography styles",
-    "file_name": "Updated Design System",
-    "modified_components": [
-      {
-        "name": "Header"
-      },
-      {
-        "name": "Footer"
-      }
-    ],
-    "modified_styles": [
-      {
-        "name": "Body Text"
-      },
-      {
-        "name": "Heading Text"
-      }
-    ],
-    "timestamp": "2023-07-18T15:30:00Z",
-    "triggered_by": {
-      "handle": "DesignTeam"
-    }
-  },
-  {
-    "created_components": [
-      {
-        "name": "Test Component"
-      }
-    ],
-    "description": "Manual test update",
-    "file_name": "Test File",
-    "timestamp": "2023-07-17T12:00:00Z",
-    "triggered_by": {
-      "handle": "Test User"
-    }
-  },
-  {
-    "created_components": [
-      {
-        "name": "Test Component"
-      }
-    ],
-    "description": "Manual test update",
-    "file_name": "Test File",
-    "timestamp": "2023-07-17T12:00:00Z",
-    "triggered_by": {
-      "handle": "Test User"
-    }
+    "created_components": [],
+    "modified_components": [],
+    "created_styles": [],
+    "modified_styles": []
   }
 ]
