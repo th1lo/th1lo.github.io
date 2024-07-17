@@ -2,116 +2,53 @@ name: Update Design System
 
 on:
   repository_dispatch:
-    types: [figma-webhook]
+    types: [figma-webhook, LIBRARY_PUBLISH]
 
 jobs:
   update-and-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Verify webhook passcode
+      - uses: actions/checkout@v3
+      
+      - name: Debug Payload
         env:
-          WEBHOOK_PASSCODE: ${{ secrets.WEBHOOK_PASSCODE }}
           PAYLOAD: ${{ toJson(github.event.client_payload) }}
         run: |
           echo "Received payload:"
-          echo "$PAYLOAD" | jq .
-          if [[ $(echo "$PAYLOAD" | jq -r '.passcode') != "$WEBHOOK_PASSCODE" ]]; then
-            echo "Invalid passcode"
-            exit 1
-          fi
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install dependencies
-        run: npm install axios
+          echo "$PAYLOAD"
 
       - name: Process Figma update
         env:
           FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
+          WEBHOOK_PASSCODE: ${{ secrets.WEBHOOK_PASSCODE }}
           PAYLOAD: ${{ toJson(github.event.client_payload) }}
         run: |
-          node << EOF
-          const axios = require('axios');
-          const fs = require('fs').promises;
+          echo "Processing Figma update"
+          
+          # Extract relevant information
+          FILE_NAME=$(echo "$PAYLOAD" | grep -o '"file_name":"[^"]*' | cut -d'"' -f4)
+          DESCRIPTION=$(echo "$PAYLOAD" | grep -o '"description":"[^"]*' | cut -d'"' -f4)
+          TIMESTAMP=$(echo "$PAYLOAD" | grep -o '"timestamp":"[^"]*' | cut -d'"' -f4)
+          
+          echo "File Name: $FILE_NAME"
+          echo "Description: $DESCRIPTION"
+          echo "Timestamp: $TIMESTAMP"
+          
+          # Update data.json
+          if [ ! -f data.json ]; then
+            echo "[]" > data.json
+          fi
+          
+          NEW_DATA=$(cat data.json | sed '1s/^/[{"file_name": "'$FILE_NAME'", "description": "'$DESCRIPTION'", "timestamp": "'$TIMESTAMP'"},/')
+          echo "$NEW_DATA" > data.json
 
-          async function processUpdate() {
-            try {
-              console.log('Starting processUpdate function');
-              const payload = JSON.parse(process.env.PAYLOAD);
-              
-              console.log('Processing payload:', JSON.stringify(payload, null, 2));
-
-              const { file_key, timestamp, triggered_by, description, file_name, components, styles } = payload;
-
-              console.log('Fetching image preview');
-              let preview_image = null;
-              try {
-                const imageResponse = await axios.get(\`https://api.figma.com/v1/images/\${file_key}?ids=0&format=png\`, {
-                  headers: { 'X-Figma-Token': process.env.FIGMA_TOKEN }
-                });
-                preview_image = imageResponse.data.images['0'];
-              } catch (error) {
-                console.log('Failed to fetch image preview:', error.message);
-              }
-
-              // Prepare update data
-              const newUpdate = {
-                file_name,
-                description,
-                triggered_by,
-                timestamp,
-                preview_image,
-                created_components: components?.created || [],
-                modified_components: components?.modified || [],
-                created_styles: styles?.created || [],
-                modified_styles: styles?.modified || []
-              };
-
-              console.log('New update data:', JSON.stringify(newUpdate, null, 2));
-
-              console.log('Reading existing data.json');
-              // Read existing data.json
-              let currentData = [];
-              try {
-                const fileContent = await fs.readFile('data.json', 'utf8');
-                currentData = JSON.parse(fileContent);
-              } catch (error) {
-                console.log('data.json not found or empty, creating new array');
-              }
-
-              // Add new update and limit to 50 entries
-              currentData.unshift(newUpdate);
-              currentData = currentData.slice(0, 50);
-
-              console.log('Writing updated data back to data.json');
-              // Write updated data back to data.json
-              await fs.writeFile('data.json', JSON.stringify(currentData, null, 2));
-
-              console.log('data.json updated successfully');
-            } catch (error) {
-              console.error('Error in processUpdate:', error);
-              process.exit(1);
-            }
-          }
-
-          processUpdate();
-          EOF
-
-      - name: Commit and push if changed
+      - name: Commit changes
         run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
           git add data.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update design system data" && git push)
+          git commit -m "Update design system data" || exit 0
+          git push
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

@@ -1,3 +1,8 @@
+#!/bin/bash
+
+# Load environment variables
+source .env
+
 curl -X PUT \
   -H "X-FIGMA-TOKEN: $FIGMA_TOKEN" \
   -H "Content-Type: application/json" \
@@ -7,9 +12,9 @@ curl -X PUT \
     "endpoint": "https://api.github.com/repos/'$GH_USERNAME'/'$GH_REPO_NAME'/dispatches",
     "passcode": "'$WEBHOOK_PASSCODE'",
     "description": "Design System Library Publish Notifications",
-    "client_payload": {
-      "event_type": "figma-webhook",
-      "passcode": "'$WEBHOOK_PASSCODE'"
+    "headers": {
+      "Authorization": "token '$GH_PAT'",
+      "Accept": "application/vnd.github.v3+json"
     }
   }' \
-  "https://api.figma.com/v2/webhooks/758750"
+  "https://api.figma.com/v2/webhooks/$WEBHOOK_ID"
