@@ -73,8 +73,13 @@
                     ${update.preview_image ? `<img src="${update.preview_image}" alt="Preview" class="preview-image">` : ''}
                     ${createUpdateSection('New Components', update.created_components)}
                     ${createUpdateSection('Modified Components', update.modified_components)}
+                    ${createUpdateSection('Deleted Components', update.deleted_components)}
                     ${createUpdateSection('New Styles', update.created_styles)}
                     ${createUpdateSection('Modified Styles', update.modified_styles)}
+                    ${createUpdateSection('Deleted Styles', update.deleted_styles)}
+                    ${createUpdateSection('New Variables', update.created_variables)}
+                    ${createUpdateSection('Modified Variables', update.modified_variables)}
+                    ${createUpdateSection('Deleted Variables', update.deleted_variables)}
                 `;
                 container.appendChild(updateElement);
             });
