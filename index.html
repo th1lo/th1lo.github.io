@@ -1,60 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
-  <!-- ... (keep the existing head and style sections) ... -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css"></link>
+    <title>Viessmann ⋅ Design System Updates</title>
+    <style>
+      body {
+        font-family: Inter, sans-serif;
+        line-height: 1.6;
+        color: #fff;
+        margin: 0 auto;
+        background: #000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 64px;
+        gap: 64px;
+        font-size: 18px;
+      }
+      p {
+        color: #fff;
+      }
+      .header, a {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        text-decoration: none;
+      }
+      .update {
+        background-color: #111;
+        border-radius: 16px;
+        padding: 32px 24px;
+        margin-bottom: 20px;
+        min-width: 600px;
+        display: flex;
+        flex-direction: column;
+      }
+      .update-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .update h2 {
+        margin: 0;
+        color: #fff;
+      }
+      .update-meta {
+        margin: 0;
+        font-size: 0.95em;
+        color: #858585;
+      }
+      .update-description {
+        margin: 24px 0 0 0;
+        font-size: 1.5em;
+        font-style: italic;
+        font-weight: 100;
+        color: #858585;
+
+
+      }
+      .update-section {
+        margin: 0px;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .update-section h3 {
+        margin-bottom: 5px;
+        color: #fff;
+      }
+      .update-section ul {
+        margin-top: 0;
+        padding-left: 20px;
+        color: #858585;
+      }
+      .preview-image {
+        max-width: 100%;
+        height: auto;
+        margin-top: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
   <body>
-    <!-- ... (keep the existing header section) ... -->
+    <div class="header">
+      <a href="">
+        <svg
+          width="148"
+          height="32"
+          viewBox="0 0 148 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M66.0181 0.00856443L54.6426 0C54.6426 0 50.181 0.113035 50.181 4.65301C50.181 9.32306 54.6426 9.21762 54.6426 9.21762L61.4026 9.20811C61.4026 9.20811 62.2947 9.20811 62.2947 10.1721C62.2947 11.007 61.3998 11.007 61.3998 11.007H50.4926V14.9249L61.7943 14.9258C61.7943 14.9258 66.6051 15.1148 66.6051 10.0117C66.6051 5.61988 61.7943 5.49072 61.7943 5.49072H55.3881C55.3881 5.49072 54.3937 5.49072 54.3937 4.65393C54.3937 3.84472 55.3881 3.84473 55.3881 3.84473H66.0181V0.00856443Z"
+            fill="#FF3E17"
+          />
+          <path
+            d="M0.787842 7.4585L8.20128 21.765H14.1743L21.4901 7.45942H15.6968L11.5652 16.1594C11.3514 16.6086 11.3514 17.1121 11.3514 17.1121C11.3514 17.1121 11.3514 16.6087 11.132 16.1471L7.00137 7.45942L0.787842 7.4585Z"
+            fill="#FF3E17"
+          />
+          <path
+            d="M28.8686 7.45947V21.746H23.7085V7.45947H28.8686Z"
+            fill="#FF3E17"
+          />
+          <path
+            d="M88.2425 7.45947L81.2815 7.46047L79.1388 13.3738C78.9627 13.8629 78.9111 14.7975 78.9111 14.7975C78.9111 14.7975 78.8365 13.8487 78.666 13.3738L76.5408 7.46047L69.6056 7.45947L69.5991 21.748L74.0496 21.746V13.2465C74.0496 13.2465 74.0496 13.7508 74.2395 14.2058L77.3895 21.748H80.4327L83.5828 14.031C83.7699 13.5733 83.7699 13.0689 83.7699 13.0689V21.746H88.2425V7.45947Z"
+            fill="#FF3E17"
+          />
+          <path
+            d="M121.647 21.7489L126.745 21.746V7.45947H121.875V15.3037C121.875 15.3037 121.875 14.7994 121.555 14.4157L115.768 7.45947H110.638V21.746H115.768V13.9028C115.768 13.9028 115.768 14.4062 116.075 14.789L121.647 21.7489Z"
+            fill="#FF3E17"
+          />
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M108.972 21.748L101.962 7.46143H96.5123L89.5025 21.748H94.952L96.2478 19.1057L102.225 19.1067L103.522 21.748L108.499 21.749L108.498 21.748H108.972ZM97.5593 15.489C97.5593 15.489 98.8053 12.9417 99.0209 12.5001C99.2366 12.0584 99.2366 11.555 99.2366 11.555C99.2366 11.555 99.2366 12.0584 99.4532 12.5019L100.921 15.5032L97.5593 15.489Z"
+            fill="#FF3E17"
+          />
+          <path
+            d="M142.116 21.7509L147.212 21.749V7.46143H142.342V15.3057C142.342 15.3057 142.342 14.8013 142.023 14.4176L136.237 7.46143H131.106V21.749H136.237V13.9047C136.237 13.9047 136.237 14.4091 136.543 14.7918L142.116 21.7509Z"
+            fill="#FF3E17"
+          />
+          <path
+            d="M66.0216 17.0818L54.6461 17.0742C54.6461 17.0742 50.1836 17.1863 50.1836 21.7272C50.1836 26.3963 54.6461 26.2909 54.6461 26.2909L61.4052 26.2823C61.4052 26.2823 62.2973 26.2823 62.2973 27.2463C62.2973 28.0812 61.4034 28.0812 61.4034 28.0812H50.4961V31.9991H61.7969C61.7969 31.9991 66.6086 32.189 66.6086 27.0858C66.6086 22.6931 61.7969 22.5648 61.7969 22.5648L55.3917 22.5639C55.3917 22.5639 54.3973 22.5639 54.3973 21.7272C54.3973 20.918 55.3917 20.918 55.3917 20.918L66.0216 20.9189V17.0818Z"
+            fill="#FF3E17"
+          />
+          <path
+            d="M38.422 17.9356L38.4229 15.9534H46.1626V12.7384H38.4229V10.968H47.8436V7.46047L33.5319 7.45947V21.746H48.2197V17.9365L38.422 17.9356Z"
+            fill="#FF3E17"
+          />
+        </svg>
+
+        <p>•</p>
+        <p>Design System Updates</p>
+      </a>
+    </div>
 
     <div id="updates-container"></div>
 
     <script>
-      async function fetchUpdates() {
-        const response = await fetch("data.json");
-        const updates = await response.json();
-        const container = document.getElementById("updates-container");
-
-        updates.forEach((update) => {
-          const updateElement = document.createElement("div");
-          updateElement.className = "update";
-          updateElement.innerHTML = `
-            <div class="update-header">
-              <h2>${update.file_name}</h2>
-              <p class="update-meta">
-                Published ${update.triggered_by ? `by ${update.triggered_by.handle}` : ''} on ${new Date(update.timestamp).toLocaleString()}
-              </p>
+        async function fetchUpdates() {
+          const response = await fetch("data.json");
+          const updates = await response.json();
+          const container = document.getElementById("updates-container");
+  
+          updates.forEach((update) => {
+            const updateElement = document.createElement("div");
+            updateElement.className = "update";
+            updateElement.innerHTML = `
+              <div class="update-header">
+                <h2>${update.file_name}</h2>
+                <p class="update-meta">
+                  Published ${update.triggered_by ? `by ${update.triggered_by.handle}` : ''} on ${new Date(update.timestamp).toLocaleString()}
+                </p>
+              </div>
+              <p class="update-description">${update.description || 'No description provided'}</p>
+              ${
+                update.preview_image
+                  ? `<img src="${update.preview_image}" alt="Preview" class="preview-image">`
+                  : ""
+              }
+              ${createUpdateSection("New Components", update.created_components)}
+              ${createUpdateSection("Modified Components", update.modified_components)}
+              ${createUpdateSection("Deleted Components", update.deleted_components)}
+              ${createUpdateSection("New Styles", update.created_styles)}
+              ${createUpdateSection("Modified Styles", update.modified_styles)}
+              ${createUpdateSection("Deleted Styles", update.deleted_styles)}
+              ${createUpdateSection("New Variables", update.created_variables)}
+              ${createUpdateSection("Modified Variables", update.modified_variables)}
+              ${createUpdateSection("Deleted Variables", update.deleted_variables)}
+            `;
+            container.appendChild(updateElement);
+          });
+        }
+  
+        function createUpdateSection(title, items) {
+          if (!items || items.length === 0) return "";
+          return `
+            <div class="update-section">
+              <h3>${title}</h3>
+              <ul>
+                ${items.map((item) => `<li>${item.name}</li>`).join("")}
+              </ul>
             </div>
-            <p class="update-description">${update.description || 'No description provided'}</p>
-            ${
-              update.preview_image
-                ? `<img src="${update.preview_image}" alt="Preview" class="preview-image">`
-                : ""
-            }
-            ${createUpdateSection("New Components", update.created_components)}
-            ${createUpdateSection("Modified Components", update.modified_components)}
-            ${createUpdateSection("Deleted Components", update.deleted_components)}
-            ${createUpdateSection("New Styles", update.created_styles)}
-            ${createUpdateSection("Modified Styles", update.modified_styles)}
-            ${createUpdateSection("Deleted Styles", update.deleted_styles)}
-            ${createUpdateSection("New Variables", update.created_variables)}
-            ${createUpdateSection("Modified Variables", update.modified_variables)}
-            ${createUpdateSection("Deleted Variables", update.deleted_variables)}
           `;
-          container.appendChild(updateElement);
-        });
-      }
-
-      function createUpdateSection(title, items) {
-        if (!items || items.length === 0) return "";
-        return `
-          <div class="update-section">
-            <h3>${title}</h3>
-            <ul>
-              ${items.map((item) => `<li>${item.name}</li>`).join("")}
-            </ul>
-          </div>
-        `;
-      }
-
-      fetchUpdates();
-    </script>
+        }
+  
+        fetchUpdates();
+      </script>
   </body>
 </html>
