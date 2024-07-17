@@ -35,6 +35,8 @@ jobs:
           async function processUpdate() {
             const payload = JSON.parse(process.env.PAYLOAD);
             
+            console.log('Received payload:', JSON.stringify(payload, null, 2));
+
             // Verify passcode
             if (payload.passcode !== process.env.WEBHOOK_PASSCODE) {
               console.error('Invalid passcode');
@@ -53,7 +55,7 @@ jobs:
               process.exit(0);
             }
 
-            const { file_key, timestamp, triggered_by, description, file_name } = payload;
+            const { file_key, timestamp, triggered_by, description, file_name, components, styles } = payload;
 
             try {
               // Get image preview
@@ -69,15 +71,10 @@ jobs:
                 triggered_by,
                 timestamp,
                 preview_image,
-                created_components: payload.created_components,
-                modified_components: payload.modified_components,
-                deleted_components: payload.deleted_components,
-                created_styles: payload.created_styles,
-                modified_styles: payload.modified_styles,
-                deleted_styles: payload.deleted_styles,
-                created_variables: payload.created_variables,
-                modified_variables: payload.modified_variables,
-                deleted_variables: payload.deleted_variables
+                created_components: components.created,
+                modified_components: components.modified,
+                created_styles: styles.created,
+                modified_styles: styles.modified
               };
 
               // Read existing data.json
